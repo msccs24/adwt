@@ -37,3 +37,47 @@ Q1
     </div>
   </body>
 </html>    
+
+db.createCollection("Newspaper");
+db.createCollection("City");
+db.createCollection("Publisher");
+
+db.Publishers.insertMany([
+    { "_id": 1, "name": "Publisher A", "state": "Maharashtra", "newspapers": [101, 102] },
+    { "_id": 2, "name": "Publisher B", "state": "Gujarat", "newspapers": [103] },
+    { "_id": 3, "name": "Publisher C", "state": "Gujarat", "newspapers": [104, 105] },
+    { "_id": 4, "name": "Publisher D", "state": "Maharashtra", "newspapers": [106] },
+    { "_id": 5, "name": "Publisher E", "state": "Rajasthan", "newspapers": [107] }
+])
+
+db.Newspapers.insertMany([
+    { "_id": 101, "title": "Daily Times", "language": "English", "city_id": 201, "sales": 50000 },
+    { "_id": 102, "title": "Marathi Dainik", "language": "Marathi", "city_id": 202, "sales": 70000 },
+    { "_id": 103, "title": "Gujarati Patrika", "language": "Gujarati", "city_id": 203, "sales": 60000 },
+    { "_id": 104, "title": "Sandesh", "language": "Gujarati", "city_id": 204, "sales": 45000 },
+    { "_id": 105, "title": "Mumbai Samachar", "language": "Marathi", "city_id": 205, "sales": 75000 },
+    { "_id": 106, "title": "Lokmat", "language": "Marathi", "city_id": 202, "sales": 80000 },
+    { "_id": 107, "title": "Rajasthan Patrika", "language": "Hindi", "city_id": 206, "sales": 30000 }
+])
+
+db.Cities.insertMany([
+    { "_id": 201, "name": "Mumbai", "state": "Maharashtra" },
+    { "_id": 202, "name": "Nashik", "state": "Maharashtra" },
+    { "_id": 203, "name": "Ahmedabad", "state": "Gujarat" },
+    { "_id": 204, "name": "Surat", "state": "Gujarat" },
+    { "_id": 205, "name": "Pune", "state": "Maharashtra" },
+    { "_id": 206, "name": "Jaipur", "state": "Rajasthan" }
+])
+
+db.Newspapers.find({ city_id: 202 })
+
+db.Newspapers.find({ language: "Marathi" })
+
+db.Publishers.countDocuments({ state: "Gujarat" })
+
+const maharashtraCities = db.Cities.find({ state: "Maharashtra" }).map(city => city._id);
+const cursor = db.Newspapers.find({ city_id: { $in: maharashtraCities } }).sort({ sales: -1 }).limit(1);
+while (cursor.hasNext()) {
+    printjson(cursor.next());
+}
+
