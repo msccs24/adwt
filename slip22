@@ -1,0 +1,38 @@
+Q1
+<!DOCTYPE HTML>
+<HTML>
+<HEAD>
+	<title></title>
+	<style>
+		body{
+		font-family:sans-serif;
+		display:flex;
+		justify-content:center;
+		height:100px;
+		}	
+		.text1 {
+		width:500px;	
+		Word-wrap:break-word;
+		border: 2px solid black;
+		text-shadow:4px 4px 4px red;
+		}
+		
+		.text{
+		width:500px;
+		text-shadow:4px 4px 4px black;
+		text-overflow:ellipsis;
+		
+		}
+		
+		
+		
+	</style>
+</HEAD>
+<body>
+	<div class="text">Hover Over Me!!!
+the subject or ideas contained in something written, said, created, or represented: academic/educational content. It's easy to update the content of the Web site. art. Content is also the things represented or suggested in something written or created as art, or the ideas it communicates.</div>
+	
+	<div class="text1">Hover Over Me!!!
+the subject or ideas contained in something written, said, created, or represented: academic/educational content. It's easy to update the content of the Web site. art. Content is also the things represented or suggested in something written or created as art, or the ideas it communicates.</div>
+</body>
+</html>
