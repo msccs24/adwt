@@ -1,0 +1,101 @@
+Q1
+<html>
+  <head>
+    <title> Web page </title>
+    <style> 
+      *{
+         margin:0px;
+         padding:0px;
+      }
+      header{
+        background-color:pink;
+        padding:5px;
+        text-align:center;
+        height:80px;
+        
+      }  
+           
+      nav ul{
+         margin:0px;
+         padding:0px;
+         overflow:hidden;
+         list-style-type:none;
+         background-color:yellow;
+       }
+       nav li{
+         float:left;
+       }
+       nav li a{
+         padding:10px 10px;
+         display:block;
+         text-align:center;
+         text-decoration:none;
+       }
+       nav li a:hover{
+         background-color:pink;
+       }
+       section{
+         background-color:gold;
+         padding:30px 30px;
+         height:400px;
+         width:880px;
+         float:left;
+       } 
+       aside{
+         background-color:lightskyblue; 
+         height:400px;
+         padding:30px 30px;
+         width:366px;
+         float:right;
+       }  
+       footer{
+         background-color:grey;
+         text-align:center;
+         padding:50px 50px;
+         margin:20px 0px;
+         
+         
+       }  
+         
+    </style>
+  </head>
+  <body>
+  <div>
+    <header>
+      <h1>Artificial Intelligence</h1>
+    </header>
+    <nav>
+     <ul>
+       <li><a href="#"> Home    </a></li>
+       <li><a href="#"> about   </a></li>
+       <li><a href="#"> contact </a></li>
+     </ul> 
+    </nav>
+    <section>
+       <h3> Artificial Intelligence</h3><br><br>
+       <p> Artificial intelligence is the simulation of human intelligence processes by machines, especially computer systems. Examples of AI applications include expert systems, natural language processing (NLP), speech recognition and machine vision.</p><br><br>
+
+<p>As the hype around AI has accelerated, vendors have scrambled to promote how their products and services incorporate it. Often, what they refer to as "AI" is a well-established technology such as machine learning.
+</p><br><br>
+<p>
+AI requires specialized hardware and software for writing and training machine learning algorithms. No single programming language is used exclusively in AI, but Python, R, Java, C++ and Julia are all popular languages among AI developers.</p>
+    </section>
+    <aside>
+       <h3> AI </h3>
+       <ul>
+         <li> Machine Learning</li>
+         <li> Deep learning</li>
+         <li> Robot</li>
+           <ul>
+             <li>copilot </li>
+             <li>bot </li>
+           </ul>
+         <li> chartGPT</li>
+       </ul>
+    </aside>
+    <footer>
+      <p>@copy</p>
+    </footer>
+  <div>  
+  </body>
+</html> 
