@@ -1,0 +1,43 @@
+Q1
+<html>
+   <head>
+   <title>Project Management</title>
+   <style>
+ h6{
+     color:red;
+     height:20px;
+     width:360px;
+     margin:auto 600px;
+     }
+     div{
+          background-color:yellow;
+          padding:20px;
+          height:300px;
+          width:360px;
+          margin:auto;
+        }
+        </style>
+        </head>     
+        <body>
+        <h6>project Management</h6>
+        <div>
+         project Name
+         <input type="text"nme="pname" plceholder="project name"><br><br>
+         Assigned to
+         <select>
+         <option>Rajshree</option>
+         <option>sakshi</option>
+         <option>prachi</option>
+          </select><br><br>
+          Start Date
+          <input type="radio" nme="priority">High
+          <input type="radio" nme="priority">Average
+          <input type="radio" nme="priority">Low<br><br>
+          Description
+          <textarea cols="20" rows="1"></textarea><br><br>
+          <input type="submit">
+          <input type="reset">
+        </div>
+     </body>
+  </html>
+          
