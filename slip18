@@ -1,0 +1,23 @@
+Q1
+<!DOCTYPE HTML>
+<HTML>
+<HEAD>
+	<title></title>
+	<style>
+	.img{
+		margin:250px;
+		display:flex;
+		justify-content:center;
+
+	}
+	.img:hover{
+		transform :rotate(180deg) scale(2,2) translate(50px,50px);
+		text-shadow:4px 4px 4px black;
+	}
+		
+	</style>
+</HEAD>
+<body>
+	<img class="img" src="images.jpeg" alt="image">
+</body>
+</html>
