@@ -1,0 +1,73 @@
+Q1
+<html>
+   <head>
+      <title>Registration Page</title>
+   
+   <style>
+      div{
+      height:600px;
+      width:400px;
+      margin:auto;
+      padding:20px;
+      background-color:Lightskyblue;
+      color:red;
+    }
+    </style>
+    </head>
+   <h1 style="text-align:center";>Registration Page</h1>
+   <div>
+   <form>
+     Firstname :-
+     <input type="text" name="firstname" size="15"><br><br>
+     Middlename :-
+     <input type="text" name="middlename" size="15"><br><br>
+     Lastname :-
+     <input type="text" name="lastname" size="15"><br><br>
+     
+     Age:-
+     <input type="number" range="1-90" name="age"><br><br>
+      
+     Course:-
+     <select>
+        <option value="Course">Course</option>
+        <option value="BSC">BSC</option>
+        <option value="MSC">MSC</option>
+        <option value="MBA">MBA</option>
+     </select><br><br>
+     
+     Gender :-
+     <input type="radio" name="gender">Male
+     <input type="radio" name="gender">Female<br><br>
+     
+     Date :-
+     <input type="date" name="date"><br><br>
+     
+     Phone :-
+     <input type="text" name="country code" value="+91" size="2">
+     <input type="text" name="phone" size="10"><br><br>
+     
+     Email :-   
+     <input type="email" id="email"><br><br>
+     
+     Search:-
+     <input type="search" id="search"><br><br>
+     
+     Addres:-
+     <textarea cols="30" rows="1"></textarea><br><br>
+     
+     Subject:-
+     <input type="checkbox" name="cb">maths
+     <input type="checkbox" name="cb">AI
+     <input type="checkbox" name="cb">AD
+     <input type="checkbox" name="cb">AOS
+     <input type="checkbox" name="cb">WT<br><br>
+     
+     Password :-
+     <input type="password" id="pass"><br><br>
+     <input type="submit">
+     <input type="reset">
+    </form>
+   
+  </body>
+</html>
+          
