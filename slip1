@@ -41,3 +41,50 @@ Q1
      </body>
   </html>
           
+Q2
+msc> db.createCollection("owner");
+msc> db.createCollection("properties");
+
+db.Properties.insertMany([
+    { "_id": 101, "location": "Mumbai", "area": 1500, "price": 250000, "owner_id": 1 },
+    { "_id": 102, "location": "Nashik", "area": 1200, "price": 180000, "owner_id": 1 },
+    { "_id": 103, "location": "Pune", "area": 1000, "price": 200000, "owner_id": 2 },
+    { "_id": 104, "location": "Nagpur", "area": 1800, "price": 300000, "owner_id": 3 },
+    { "_id": 105, "location": "Mumbai", "area": 800, "price": 95000, "owner_id": 4 },
+    { "_id": 106, "location": "Nashik", "area": 850, "price": 85000, "owner_id": 4 },
+    { "_id": 107, "location": "Pune", "area": 900, "price": 110000, "owner_id": 5 }
+])
+
+
+db.Owners.insertMany([
+    { "_id": 1, "name": "Mr. Patil", "contact": "1234567890", "properties": [101, 102] },
+    { "_id": 2, "name": "Mrs. Sharma", "contact": "0987654321", "properties": [103] },
+    { "_id": 3, "name": "Mr. Deshmukh", "contact": "1122334455", "properties": [104] },
+    { "_id": 4, "name": "Ms. Reddy", "contact": "2233445566", "properties": [105, 106] },
+    { "_id": 5, "name": "Mr. Singh", "contact": "3344556677", "properties": [107] }
+])
+
+
+db.Properties.aggregate([
+    { $group: { _id: "$location", properties: { $push: "$$ROOT" } } }
+])
+
+db.Properties.find({ owner_id: 1 }).sort({ price: 1 }).limit(1)
+
+db.Properties.aggregate([
+    { $match: { location: "Nashik" } },
+    { $lookup: {
+        from: "Owners",
+        localField: "owner_id",
+        foreignField: "_id",
+        as: "owner_details"
+    }},
+    { $unwind: "$owner_details" },
+    { $project: { "owner_details.name": 1, "owner_details.contact": 1, location: 1, area: 1, price: 1 } }
+])
+
+db.Properties.find(
+    { price: { $lt: 100000 } },
+    { area: 1, _id: 0 }
+)
+
