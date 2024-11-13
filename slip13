@@ -99,3 +99,73 @@ AI requires specialized hardware and software for writing and training machine l
   <div>  
   </body>
 </html> 
+
+db.createCollection("Students")
+db.createCollection("Competitions")
+db.createCollection("Student_Competitions")
+
+db.Students.insertMany([
+    { "_id": 1, "name": "John Doe", "class": "FY", "email": "john@example.com" },
+    { "_id": 2, "name": "Jane Smith", "class": "FY", "email": "jane@example.com" },
+    { "_id": 3, "name": "Ravi Kumar", "class": "SY", "email": "ravi@example.com" },
+    { "_id": 4, "name": "Priya Patel", "class": "FY", "email": "priya@example.com" },
+    { "_id": 5, "name": "Amit Sharma", "class": "TY", "email": "amit@example.com" },
+    { "_id": 6, "name": "Anjali Verma", "class": "FY", "email": "anjali@example.com" },
+    { "_id": 7, "name": "Vishal Reddy", "class": "SY", "email": "vishal@example.com" },
+    { "_id": 8, "name": "Manisha Rao", "class": "FY", "email": "manisha@example.com" },
+    { "_id": 9, "name": "Suresh Naik", "class": "SY", "email": "suresh@example.com" },
+    { "_id": 10, "name": "Neha Mehta", "class": "FY", "email": "neha@example.com" }
+])
+
+db.Competitions.insertMany([
+    { "_id": 1, "name": "Programming Contest", "category": "Programming", "date": ISODate("2024-11-01"), "winners": [{ "name": "John Doe", "rank": 1 }, { "name": "Ravi Kumar", "rank": 2 }, { "name": "Amit Sharma", "rank": 3 }] },
+    { "_id": 2, "name": "E-Rangoli", "category": "E-Rangoli", "date": ISODate("2024-11-05"), "winners": [{ "name": "Priya Patel", "rank": 1 }, { "name": "Manisha Rao", "rank": 2 }, { "name": "Anjali Verma", "rank": 3 }] },
+    { "_id": 3, "name": "Debate Contest", "category": "Debate", "date": ISODate("2024-11-10"), "winners": [{ "name": "Jane Smith", "rank": 1 }, { "name": "Neha Mehta", "rank": 2 }, { "name": "Suresh Naik", "rank": 3 }] }
+])
+
+db.Student_Competitions.insertMany([
+    { "student_id": 1, "competition_id": 1, "rank": 1, "score": 95 },
+    { "student_id": 2, "competition_id": 1, "rank": 4, "score": 85 },
+    { "student_id": 3, "competition_id": 1, "rank": 2, "score": 90 },
+    { "student_id": 4, "competition_id": 2, "rank": 1, "score": 85 },
+    { "student_id": 5, "competition_id": 2, "rank": 5, "score": 70 },
+    { "student_id": 6, "competition_id": 2, "rank": 3, "score": 80 },
+    { "student_id": 7, "competition_id": 3, "rank": 1, "score": 88 },
+    { "student_id": 8, "competition_id": 3, "rank": 4, "score": 75 },
+    { "student_id": 9, "competition_id": 3, "rank": 2, "score": 85 },
+    { "student_id": 10, "competition_id": 3, "rank": 3, "score": 80 }
+])
+
+db.Student_Competitions.aggregate([
+    { $group: { _id: "$competition_id", total_students: { $sum: 1 } } },
+    { $lookup: {
+        from: "Competitions",
+        localField: "_id",
+        foreignField: "_id",
+        as: "competition_details"
+    }},
+    { $unwind: "$competition_details" },
+    { $project: { "competition_name": "$competition_details.name", "average_students": { $avg: ["$total_students"] } } }
+])
+
+db.Student_Competitions.aggregate([
+    { $match: { "competition_id": 1 } },
+    { $count: "total_students" }
+])
+
+db.Competitions.aggregate([
+    { $project: { name: 1, winners: { $slice: ["$winners", 3] } } }
+])
+
+db.Student_Competitions.aggregate([
+    { $match: { "competition_id": 2 } },
+    { $lookup: {
+        from: "Students",
+        localField: "student_id",
+        foreignField: "_id",
+        as: "student_details"
+    }},
+    { $unwind: "$student_details" },
+    { $match: { "student_details.class": "FY" } },
+    { $project: { "student_name": "$student_details.name", "class": "$student_details.class" } }
+])
