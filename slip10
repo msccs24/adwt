@@ -1,0 +1,28 @@
+Q1
+<!DOCTYPE HTML>
+<HTML>
+<HEAD>
+	<title></title>
+	<style>
+	.button{
+	font-size:15px;
+	padding:10px 15px;
+	background-color:green;
+	border:none;
+	cursor:pointer;
+	transition-property:background-color,font-size;
+	transition-duration:0.5s;
+	transition-delay:0.3s;
+	}
+	.button:hover{
+	font-size:35px;
+	background-color:red;
+	}
+		
+	</style>
+</HEAD>
+<body>
+	
+	<button class="button">Press Me!!!</button>
+</body>
+</html>
