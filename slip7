@@ -1,0 +1,31 @@
+Q1
+<!DOCTYPE HTML>
+<HTML>
+<HEAD>
+	<title></title>
+	<style>
+		body{
+		font-family:sans-serif;
+		display:flex;
+		justify-content:center;
+		height:100px;
+		}	
+		.text{
+		margin:69px;
+		font-size:36px;
+		font-weight:bold;
+		color:magenta;
+		text-transform:uppercase;
+		transition: transform 0.3s ease;
+		}
+		
+		.text:hover{
+		transform :rotateX(30deg) rotateY(30deg) scale(1.7);
+		text-shadow:4px 4px 4px black;
+		}
+	</style>
+</HEAD>
+<body>
+	<h1 class="text">Hover Over Me!!!</h1>
+</body>
+</html>
