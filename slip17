@@ -1,0 +1,44 @@
+Q1
+<html>
+<head><title>Styled table</title>
+<style>
+#main1{
+display:flex;
+justify-content:center;
+border:5px solid black;
+height:400px;
+width:400px;
+align-items:center;
+background:orange;
+}
+#main2{
+display:grid;
+justify-content:center;
+
+border:5px solid black;
+height:300px;
+width:300px;
+background:yellow;
+}
+#submain1{
+margin-top:15px;
+display:flex;
+justify-content:center;
+border:5px solid black;
+height:100px;
+width:250px;
+background:cyan;
+}
+
+</style>
+</head>
+<body>
+<div id="main1">
+<div id="main2">
+<div id="submain1"> M.Sc Computer Science</div><br>
+<div id="submain1"> Academic Year<br>2024-25</div>
+</div>
+</div>
+
+</body>
+</html>
