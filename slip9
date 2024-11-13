@@ -70,4 +70,65 @@ Q1
    
   </body>
 </html>
-          
+
+db.createCollection("Customers")
+db.createCollection("Loans")
+
+db.Customers.insertMany([
+    { "_id": 1, "name": "Mr. Patil", "address": "123 Oak Street", "phone": "1234567890", "email": "patil@example.com" },
+    { "_id": 2, "name": "Mr. Deshmukh", "address": "456 Maple Avenue", "phone": "2345678901", "email": "deshmukh@example.com" },
+    { "_id": 3, "name": "Mrs. Sharma", "address": "789 Pine Road", "phone": "3456789012", "email": "sharma@example.com" },
+    { "_id": 4, "name": "Mr. Ramesh", "address": "101 Birch Lane", "phone": "4567890123", "email": "ramesh@example.com" },
+    { "_id": 5, "name": "Ms. Gupta", "address": "202 Cedar Boulevard", "phone": "5678901234", "email": "gupta@example.com" },
+    { "_id": 6, "name": "Mr. Kumar", "address": "303 Ash Street", "phone": "6789012345", "email": "kumar@example.com" },
+    { "_id": 7, "name": "Mr. Das", "address": "404 Willow Drive", "phone": "7890123456", "email": "das@example.com" },
+    { "_id": 8, "name": "Mrs. Joshi", "address": "505 Elm Street", "phone": "8901234567", "email": "joshi@example.com" },
+    { "_id": 9, "name": "Mr. Shah", "address": "606 Maple Court", "phone": "9012345678", "email": "shah@example.com" },
+    { "_id": 10, "name": "Ms. Mehta", "address": "707 Pine Court", "phone": "0123456789", "email": "mehta@example.com" }
+])
+
+db.Loans.insertMany([
+    { "_id": 101, "customer_id": 1, "loan_type": "Home Loan", "loan_amt": 120000, "city": "Pune", "date_taken": ISODate("2021-01-01") },
+    { "_id": 102, "customer_id": 2, "loan_type": "Car Loan", "loan_amt": 50000, "city": "Pimpri", "date_taken": ISODate("2020-02-15") },
+    { "_id": 103, "customer_id": 3, "loan_type": "Personal Loan", "loan_amt": 30000, "city": "Mumbai", "date_taken": ISODate("2022-05-10") },
+    { "_id": 104, "customer_id": 4, "loan_type": "Home Loan", "loan_amt": 150000, "city": "Pune", "date_taken": ISODate("2021-06-01") },
+    { "_id": 105, "customer_id": 5, "loan_type": "Education Loan", "loan_amt": 80000, "city": "Pune", "date_taken": ISODate("2021-03-01") },
+    { "_id": 106, "customer_id": 6, "loan_type": "Home Loan", "loan_amt": 200000, "city": "Mumbai", "date_taken": ISODate("2020-07-10") },
+    { "_id": 107, "customer_id": 7, "loan_type": "Car Loan", "loan_amt": 40000, "city": "Pimpri", "date_taken": ISODate("2021-08-20") },
+    { "_id": 108, "customer_id": 8, "loan_type": "Personal Loan", "loan_amt": 35000, "city": "Pimpri", "date_taken": ISODate("2021-12-01") },
+    { "_id": 109, "customer_id": 9, "loan_type": "Business Loan", "loan_amt": 500000, "city": "Pimpri", "date_taken": ISODate("2020-10-05") },
+    { "_id": 110, "customer_id": 10, "loan_type": "Education Loan", "loan_amt": 60000, "city": "Pune", "date_taken": ISODate("2021-05-01") }
+])
+
+db.Customers.find({ "name": { $regex: "^D" } }, { name: 1, _id: 0 })
+
+db.Loans.aggregate([
+    { $match: { "city": "Pimpri" } },
+    { $lookup: {
+        from: "Customers",
+        localField: "customer_id",
+        foreignField: "_id",
+        as: "customer_details"
+    }},
+    { $unwind: "$customer_details" },
+    { $sort: { "customer_details.name": -1 } },
+    { $project: { "customer_details.name": 1, _id: 0 } }
+])
+
+db.Loans.aggregate([
+    { $sort: { "loan_amt": -1 } },
+    { $limit: 1 },
+    { $lookup: {
+        from: "Customers",
+        localField: "customer_id",
+        foreignField: "_id",
+        as: "customer_details"
+    }},
+    { $unwind: "$customer_details" },
+    { $project: { "customer_details": 1, "loan_amt": 1, _id: 0 } }
+])
+
+db.Loans.updateOne(
+    { "loan_amt": { $gt: 100000 }, "customer_id": 1 },
+    { $set: { "customer_details.address": "789 New Street, Pune" } }
+)
