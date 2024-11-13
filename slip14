@@ -1,0 +1,49 @@
+Q1
+<html>
+<head><title>Styled table</title>
+<style>
+h1 {
+text-align:center;
+}
+form{
+margin:0px 430px;
+background:lightblue;
+}
+label {
+display:inline-block;
+padding:0px 30px 0px 0px;
+}
+</style>
+</head>
+<body>
+<h1><u>Customer Tour form </u></h1>
+<form>
+<label>Name : </label>
+<input type="text"><br><br>
+<label>Address :</label>
+<textarea row="4" col="10"></textarea><br><br>
+<label>Phone No.: </label>
+<input type="tel"><br><br>
+<label>Gender : </label>
+<input type="radio" name="r1">Male
+<input type="radio" name="r1">Female
+<input type="radio" name="r1">Trans
+<input type="radio" name="r1">Others<br><br>
+<label>Prefered Season :</label><br>
+<input type="checkbox" name="c1">Summer<br>
+<input type="checkbox" name="c2">Winter<br>
+<input type="checkbox" name="c3">Monsoon<br>
+<input type="checkbox" name="c3">Autumn<br><br>
+<label>Location Type :</label><br>
+<input type="checkbox" name="c1">Moutain<br>
+<input type="checkbox" name="c2">Beach<br>
+<input type="checkbox" name="c3">Urban city<br>
+<input type="checkbox" name="c4">Village<br>
+<input type="checkbox" name="c5">Desert<br><br>
+
+<input type="submit" value="Submit">
+<input type="reset" value="Reset">
+</form>
+
+</body>
+</html>
