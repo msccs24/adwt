@@ -1,0 +1,41 @@
+Q1
+<html>
+  <head>
+    <title> Web Page </title>
+    <link rel="icon" href="./logo.jpeg">
+    <style>
+       ul{
+         margin:0px;
+         padding:0px;
+         overflow:hidden;
+         list-style-type:none;
+         background-color:yellow;
+       }
+       li{
+         float:left;
+       }
+       li a{
+         padding:10px 10px;
+         display:block;
+         text-align:center;
+         text-decoration:none;
+       }
+       li a:hover{
+         background-color:pink;
+       }    
+       
+    </style>
+  </head>
+  <body>
+     <h1> Msc Computer science</h6>
+     <img src="./index.jpeg"><br><br>
+     <a href="https://google.com"> Click </a><br><br>
+     <ul>
+       <li><a href="#"> Home    </a></li>
+       <li><a href="#"> about   </a></li>
+       <li><a href="#"> contact </a></li>
+     </ul>
+       
+       
+  </body>
+</html>    
