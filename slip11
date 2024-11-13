@@ -1,4 +1,10 @@
 Q2
+db.createCollection("Customers")
+db.createCollection("Products")
+db.createCollection("Orders")
+db.createCollection("Invoices")
+
+
 db.Products.insertMany([
     { "_id": 1, "name": "Laptop", "category": "Electronics", "price": 50000, "stock": 20 },
     { "_id": 2, "name": "Smartphone", "category": "Electronics", "price": 30000, "stock": 50 },
