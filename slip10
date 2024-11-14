@@ -26,3 +26,65 @@ Q1
 	<button class="button">Press Me!!!</button>
 </body>
 </html>
+
+db.createCollection("Products")
+db.createCollection("Customers")
+db.createCollection("Purchases")
+
+db.Products.insertMany([
+    { "_id": 1, "name": "Laptop", "brand": "Dell", "warranty_period": "1 year", "rating": 4.5 },
+    { "_id": 2, "name": "Smartphone", "brand": "Samsung", "warranty_period": "2 years", "rating": 4.8 },
+    { "_id": 3, "name": "Headphones", "brand": "Sony", "warranty_period": "1 year", "rating": 4.6 },
+    { "_id": 4, "name": "Tablet", "brand": "Apple", "warranty_period": "1 year", "rating": 4.9 },
+    { "_id": 5, "name": "Smartwatch", "brand": "Fitbit", "warranty_period": "6 months", "rating": 4.3 }
+])
+
+db.Customers.insertMany([
+    { "_id": 1, "name": "Ravi Kumar", "city": "Mumbai", "purchases": [1, 3] },
+    { "_id": 2, "name": "Sita Desai", "city": "Pune", "purchases": [2] },
+    { "_id": 3, "name": "Amit Patel", "city": "Mumbai", "purchases": [4] },
+    { "_id": 4, "name": "Komal Jain", "city": "Delhi", "purchases": [5] },
+    { "_id": 5, "name": "Neha Singh", "city": "Pune", "purchases": [6] }
+])
+
+db.Purchases.insertMany([
+    { "_id": 1, "customer_id": 1, "purchase_date": "2023-08-15", "items": [{ "product_id": 1, "quantity": 1 }], "bill_amount": 60000 },
+    { "_id": 2, "customer_id": 2, "purchase_date": "2023-07-10", "items": [{ "product_id": 2, "quantity": 1 }], "bill_amount": 30000 },
+    { "_id": 3, "customer_id": 1, "purchase_date": "2023-08-20", "items": [{ "product_id": 3, "quantity": 2 }], "bill_amount": 10000 },
+    { "_id": 4, "customer_id": 3, "purchase_date": "2023-08-15", "items": [{ "product_id": 4, "quantity": 1 }], "bill_amount": 70000 },
+    { "_id": 5, "customer_id": 4, "purchase_date": "2023-06-25", "items": [{ "product_id": 5, "quantity": 1 }], "bill_amount": 15000 },
+    { "_id": 6, "customer_id": 5, "purchase_date": "2023-08-15", "items": [{ "product_id": 1, "quantity": 1 }, { "product_id": 4, "quantity": 1 }], "bill_amount": 120000 }
+])
+
+db.Products.find({ warranty_period: "1 year" }, { name: 1, _id: 0 })
+
+db.Purchases.aggregate([
+    { $match: { purchase_date: "2023-08-15" } },
+    { $lookup: {
+        from: "Customers",
+        localField: "customer_id",
+        foreignField: "_id",
+        as: "customer_details"
+    }},
+    { $unwind: "$customer_details" },
+    { $project: { "customer_details.name": 1, _id: 0 } }
+])
+
+db.Products.aggregate([
+    { $sort: { rating: -1 } },
+    { $limit: 1 },
+    { $project: { name: 1, brand: 1, rating: 1, _id: 0 } }
+])
+
+db.Purchases.aggregate([
+    { $match: { bill_amount: { $gt: 50000 } } },
+    { $lookup: {
+        from: "Customers",
+        localField: "customer_id",
+        foreignField: "_id",
+        as: "customer_details"
+    }},
+    { $unwind: "$customer_details" },
+    { $match: { "customer_details.city": "Mumbai" } },
+    { $project: { "customer_details.name": 1, "customer_details.city": 1, bill_amount: 1, _id: 0 } }
+])
