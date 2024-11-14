@@ -52,3 +52,60 @@ padding:0px 30px 0px 0px;
 
 </body>
 </html>
+
+db.createCollection("Movies")
+db.createCollection("Actors")
+db.createCollection("Producers")
+
+db.Movies.insertMany([
+    { "_id": 1, "name": "Movie A", "release_year": 2023, "budget": 5000000, "actors": [{ "actor_id": 1, "role": "Hero" }, { "actor_id": 2, "role": "Villain" }], "producers": [1, 2] },
+    { "_id": 2, "name": "Movie B", "release_year": 2022, "budget": 7500000, "actors": [{ "actor_id": 3, "role": "Lead" }, { "actor_id": 1, "role": "Supporting" }], "producers": [2] },
+    { "_id": 3, "name": "Movie C", "release_year": 2021, "budget": 3000000, "actors": [{ "actor_id": 4, "role": "Hero" }, { "actor_id": 5, "role": "Supporting" }], "producers": [3, 1] },
+    { "_id": 4, "name": "Movie D", "release_year": 2023, "budget": 9000000, "actors": [{ "actor_id": 1, "role": "Lead" }, { "actor_id": 6, "role": "Supporting" }], "producers": [4] },
+    { "_id": 5, "name": "Movie E", "release_year": 2020, "budget": 4500000, "actors": [{ "actor_id": 2, "role": "Lead" }, { "actor_id": 5, "role": "Villain" }], "producers": [2, 3] }
+])
+
+db.Actors.insertMany([
+    { "_id": 1, "name": "Akshay Kumar", "movies": [1, 2, 4] },
+    { "_id": 2, "name": "Aamir Khan", "movies": [1, 5] },
+    { "_id": 3, "name": "Shah Rukh Khan", "movies": [2] },
+    { "_id": 4, "name": "Salman Khan", "movies": [3] },
+    { "_id": 5, "name": "Ranveer Singh", "movies": [3, 5] },
+    { "_id": 6, "name": "Ajay Devgan", "movies": [4] }
+])
+
+db.Producers.insertMany([
+    { "_id": 1, "name": "Karan Johar", "movies": [{ "movie_id": 1, "year": 2023 }, { "movie_id": 3, "year": 2021 }] },
+    { "_id": 2, "name": "Aditya Chopra", "movies": [{ "movie_id": 1, "year": 2023 }, { "movie_id": 2, "year": 2022 }, { "movie_id": 5, "year": 2020 }] },
+    { "_id": 3, "name": "Ekta Kapoor", "movies": [{ "movie_id": 3, "year": 2021 }, { "movie_id": 5, "year": 2020 }] },
+    { "_id": 4, "name": "Rohit Shetty", "movies": [{ "movie_id": 4, "year": 2023 }] }
+])
+
+db.Movies.find().sort({ budget: -1 }).limit(1).project({ name: 1, _id: 0 })
+
+db.Producers.aggregate([
+    { $unwind: "$movies" },
+    { $group: { _id: { producer: "$name", year: "$movies.year" }, movie_count: { $sum: 1 } } },
+    { $match: { movie_count: { $gt: 1 } } },
+    { $project: { "producer": "$_id.producer", "year": "$_id.year", "movie_count": 1, _id: 0 } }
+])
+
+db.Movies.aggregate([
+    { $match: { "actors.actor_id": 1 } },
+    { $unwind: "$actors" },
+    { $match: { "actors.actor_id": { $ne: 1 } } },
+    { $lookup: {
+        from: "Actors",
+        localField: "actors.actor_id",
+        foreignField: "_id",
+        as: "actor_details"
+    }},
+    { $unwind: "$actor_details" },
+    { $group: { _id: "$actor_details.name" } },
+    { $project: { name: "$_id", _id: 0 } }
+])
+
+db.Movies.aggregate([
+    { $match: { "producers.1": { $exists: true } } },
+    { $project: { name: 1, _id: 0 } }
+])
