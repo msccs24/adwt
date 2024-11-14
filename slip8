@@ -22,3 +22,68 @@ Q1
     <div>
   </body>
 </html>    
+
+db.createCollection("Items")
+db.createCollection("Warehouses")
+
+db.Items.insertMany([
+    { "_id": 1, "name": "Planner", "tags": ["Office", "Stationery"], "status": "A", "height": 7 },
+    { "_id": 2, "name": "Chair", "tags": ["Furniture", "Office"], "status": "B", "height": 15 },
+    { "_id": 3, "name": "Whiteboard", "tags": ["Office", "Educational"], "status": "A", "height": 10 },
+    { "_id": 4, "name": "Pen Set", "tags": ["Office", "Stationery", "Writing"], "status": "A", "height": 1 },
+    { "_id": 5, "name": "Desk", "tags": ["Furniture", "Office"], "status": "B", "height": 8 }
+])
+
+db.Warehouses.insertMany([
+    { "_id": 1, "name": "Main Warehouse", "stock": [{ "item_id": 1, "quantity": 250 }, { "item_id": 2, "quantity": 500 }] },
+    { "_id": 2, "name": "East Warehouse", "stock": [{ "item_id": 3, "quantity": 120 }, { "item_id": 4, "quantity": 300 }] },
+    { "_id": 3, "name": "North Warehouse", "stock": [{ "item_id": 5, "quantity": 80 }, { "item_id": 1, "quantity": 50 }] },
+    { "_id": 4, "name": "South Warehouse", "stock": [{ "item_id": 2, "quantity": 70 }, { "item_id": 4, "quantity": 100 }] },
+    { "_id": 5, "name": "West Warehouse", "stock": [{ "item_id": 3, "quantity": 40 }, { "item_id": 1, "quantity": 10 }] }
+])
+
+db.Warehouses.aggregate([
+    { $unwind: "$stock" },
+    { $match: { "stock.quantity": { $gt: 300 } } },
+    { $lookup: {
+        from: "Items",
+        localField: "stock.item_id",
+        foreignField: "_id",
+        as: "item_details"
+    }},
+    { $unwind: "$item_details" },
+    { $project: { "item_name": "$item_details.name", "quantity": "$stock.quantity", _id: 0 } }
+])
+
+db.Items.find({ $where: "this.tags.length < 5" }, { name: 1, tags: 1, _id: 0 })
+
+db.Items.aggregate([
+    { $lookup: {
+        from: "Warehouses",
+        localField: "_id",
+        foreignField: "stock.item_id",
+        as: "warehouse_details"
+    }},
+    { $unwind: "$warehouse_details" },
+    { $unwind: "$warehouse_details.stock" },
+    { $match: {
+        $or: [
+            { status: "B" },
+            { "warehouse_details.stock.quantity": { $lt: 50 }, height: { $gt: 8 } }
+        ]
+    }},
+    { $project: { name: 1, status: 1, height: 1, _id: 0 } }
+])
+
+db.Warehouses.aggregate([
+    { $match: { "stock.quantity": { $lt: 20 } } },
+    { $lookup: {
+        from: "Items",
+        localField: "stock.item_id",
+        foreignField: "_id",
+        as: "item_details"
+    }},
+    { $unwind: "$item_details" },
+    { $match: { "item_details.name": "Planner" } },
+    { $project: { warehouse_name: "$name", quantity: "$stock.quantity", _id: 0 } }
+])
