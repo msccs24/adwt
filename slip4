@@ -39,3 +39,65 @@ Q1
 	</div>
 </body>
 </html>
+
+db.createCollection("Hospitals")
+db.createCollection("Doctors")
+db.createCollection("Reviews")
+
+db.Hospitals.insertMany([
+    { "_id": 1, "name": "City Care Hospital", "location": "Nashik", "specializations": ["Pediatric", "Orthopedic"], "rating": 4.5 },
+    { "_id": 2, "name": "HealthPlus Clinic", "location": "Nashik", "specializations": ["Gynaec", "Cardiology"], "rating": 4.2 },
+    { "_id": 3, "name": "Nashik General Hospital", "location": "Mumbai", "specializations": ["Orthopedic", "General Surgery"], "rating": 3.8 },
+    { "_id": 4, "name": "Sunshine Hospital", "location": "Nashik", "specializations": ["Pediatric", "Gynaec"], "rating": 4.7 },
+    { "_id": 5, "name": "MediCare Center", "location": "Pune", "specializations": ["Cardiology", "Orthopedic"], "rating": 4.0 },
+    { "_id": 6, "name": "Wellness Hospital", "location": "Nashik", "specializations": ["Pediatric", "Dermatology"], "rating": 4.1 },
+    { "_id": 7, "name": "LifeLine Hospital", "location": "Pune", "specializations": ["Orthopedic", "General Surgery"], "rating": 3.9 },
+    { "_id": 8, "name": "Noble Health", "location": "Nashik", "specializations": ["Gynaec", "Neurology"], "rating": 4.3 },
+    { "_id": 9, "name": "Apex Hospital", "location": "Nashik", "specializations": ["Orthopedic", "Cardiology"], "rating": 3.7 },
+    { "_id": 10, "name": "Unity Hospital", "location": "Nashik", "specializations": ["Pediatric", "Gynaec"], "rating": 4.6 }
+])
+
+db.Doctors.insertMany([
+    { "_id": 1, "name": "Dr. Deshmukh", "specializations": ["Orthopedic"], "hospital_ids": [1, 3, 9] },
+    { "_id": 2, "name": "Dr. Sharma", "specializations": ["Gynaec"], "hospital_ids": [2, 4, 8] },
+    { "_id": 3, "name": "Dr. Verma", "specializations": ["Pediatric"], "hospital_ids": [4, 6, 10] },
+    { "_id": 4, "name": "Dr. Nair", "specializations": ["Cardiology"], "hospital_ids": [2, 5, 9] },
+    { "_id": 5, "name": "Dr. Kulkarni", "specializations": ["Dermatology"], "hospital_ids": [6] },
+    { "_id": 6, "name": "Dr. Patel", "specializations": ["Neurology"], "hospital_ids": [8] },
+    { "_id": 7, "name": "Dr. Joshi", "specializations": ["General Surgery"], "hospital_ids": [3, 7] },
+    { "_id": 8, "name": "Dr. Gupta", "specializations": ["Orthopedic"], "hospital_ids": [1, 5, 10] },
+    { "_id": 9, "name": "Dr. Rao", "specializations": ["Pediatric"], "hospital_ids": [4, 10] },
+    { "_id": 10, "name": "Dr. Iyer", "specializations": ["Gynaec"], "hospital_ids": [8, 4, 10] }
+])
+
+db.Reviews.insertMany([
+    { "hospital_id": 1, "reviewer_name": "Amit Patil", "rating": 5, "comments": "Excellent Pediatric service." },
+    { "hospital_id": 2, "reviewer_name": "Neha Joshi", "rating": 4, "comments": "Good facilities and supportive staff." },
+    { "hospital_id": 3, "reviewer_name": "Raj Sharma", "rating": 3, "comments": "Average orthopedic treatment." },
+    { "hospital_id": 4, "reviewer_name": "Sunita Kulkarni", "rating": 5, "comments": "Great doctors, especially in Pediatric." },
+    { "hospital_id": 5, "reviewer_name": "Manoj Nair", "rating": 4, "comments": "Good cardiology department." },
+    { "hospital_id": 6, "reviewer_name": "Anjali Desai", "rating": 4, "comments": "Nice and clean hospital." },
+    { "hospital_id": 7, "reviewer_name": "Suresh Reddy", "rating": 3, "comments": "Average experience." },
+    { "hospital_id": 8, "reviewer_name": "Madhavi Rao", "rating": 5, "comments": "Highly recommended for neurology." },
+    { "hospital_id": 9, "reviewer_name": "Priya Mehta", "rating": 3, "comments": "Orthopedic needs improvement." },
+    { "hospital_id": 10, "reviewer_name": "Ravi Singh", "rating": 4, "comments": "Good service in Gynaec." }
+])
+
+db.Hospitals.find({ specializations: "Orthopedic" }, { name: 1, _id: 0 })
+
+db.Hospitals.find({ location: "Nashik" }, { name: 1, _id: 0 })
+
+db.Doctors.aggregate([
+    { $match: { name: "Dr. Deshmukh" } },
+    { $lookup: {
+        from: "Hospitals",
+        localField: "hospital_ids",
+        foreignField: "_id",
+        as: "hospital_details"
+    }},
+    { $unwind: "$hospital_details" },
+    { $project: { "hospital_name": "$hospital_details.name", _id: 0 } }
+])
+
+db.Hospitals.find({ rating: { $gte: 4 } }, { name: 1, _id: 0 })
+
